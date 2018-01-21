@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -25,13 +25,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
-@Autonomous(name = "driveToCol")
-
-public class driveToCol extends LinearOpMode {
+@Autonomous(name = "driveToColglobal")
+//@Disabled
+public abstract class driveToColGlobal extends LinearOpMode {
 
 
     OpenGLMatrix lastLocation = null;
-ElapsedTime runtime=new ElapsedTime();
+ColorSensor cryptColor;
+DistanceSensor cryptDist;
     double distanceToGo = 0;
     VuforiaLocalizer vuforia;
     Servo servoGlipSides;
@@ -55,15 +56,14 @@ ElapsedTime runtime=new ElapsedTime();
     int mode = 1;
     RelicRecoveryVuMark v;
     DcMotor[] intakeDC = new DcMotor[2];
-
-
     @Override
 
     public void runOpMode() throws InterruptedException {
 
 
         range = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "sRange");
-
+        cryptColor= hardwareMap.get(ColorSensor.class, "cryptColor");
+        cryptDist=      hardwareMap.get(DistanceSensor.class, "cryptColor");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         dcmotor[0][1] = hardwareMap.get(DcMotor.class, "right1");
@@ -102,7 +102,7 @@ ElapsedTime runtime=new ElapsedTime();
             case 1: {//red 1
                 modeTurn = 90;
                 S = 0;
-                D = 1;
+                D = 30;
                 modeOri = 0;
                 bColor = 0;
                 break;
@@ -110,15 +110,15 @@ ElapsedTime runtime=new ElapsedTime();
             case 2: {//red 2
                 modeTurn = 180;
                 S = 0;
-                D = 1;
+                D = 30;
                 modeOri = 0;
                 bColor = 0;
                 break;
             }
             case 3: {//blue 1
                 modeTurn = -90;
-                S = 0;
-                D = -1;
+                S = 15;
+                D = 15;
                 modeOri = 180;
                 bColor = 1;
                 break;
@@ -126,7 +126,7 @@ ElapsedTime runtime=new ElapsedTime();
             case 4: {//blue 2
                 modeTurn = 0;
                 S = 15;
-                D = -1;
+                D = 15;
                 modeOri = 180;
                 bColor = 1;
                 break;
@@ -138,37 +138,38 @@ ElapsedTime runtime=new ElapsedTime();
 
         waitForStart();
         if (opModeIsActive()) {
-            servoGlipSides.setPosition(0);
-            telemetry.addLine("knockBall");
-            telemetry.update();
-            knockBall(bColor);
-            telemetry.addLine("vufuria");
-            telemetry.update();
-         sleep(200);
-         int colVu = GetColoumn();
-         sleep(200);
-            telemetry.addLine("getDownBalance");
-            telemetry.update();
-         getDownBalance(-0.28*D, 200);
-         sleep(500);
-            telemetry.addLine("Turn");
-            telemetry.update();
-         Turn(modeTurn);
-         sleep(200);
-            telemetry.addLine("colDrive");
-            telemetry.update();
-         colDrive(range, 1, -0.46*D, colVu);
+//            servoGlipSides.setPosition(0);
+//            telemetry.addLine("knockBall");
+//            telemetry.update();
+//            knockBall(bColor);
+//            telemetry.addLine("vufuria");
+//            telemetry.update();
+//         sleep(200);
+
+         int colVu = 1;
+//         sleep(200);
+//            telemetry.addLine("getDownBalance");
+//            telemetry.update();
+//         getDownBalance(-0.28, 200);
+//         sleep(500);
+//            telemetry.addLine("Turn");
+//            telemetry.update();
+//         Turn(modeTurn);
+//         sleep(200);
+//            telemetry.addLine("colDrive");
+//            telemetry.update();
+         colDrive(range, 1, -0.46, colVu);
          sleep(200);
             telemetry.addLine("DriveByDistance");
             telemetry.update();
-         DriveByDistance(10,-0.4*D,range,imu.getAngularOrientation(AxesReference.INTRINSIC,
+         DriveByDistance(10,-0.4,range,imu.getAngularOrientation(AxesReference.INTRINSIC,
                  AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
          sleep(200);
             telemetry.addLine("scoreGlip");
             telemetry.update();
-       //  scoreGlip();
-         sleep(200);
-           // getMoreGlip(0,1,0.5);
+         scoreGlip();
+            sleep(200);
+//getMoreGlip(0,1,0.5);
         }
     }
 
@@ -267,19 +268,19 @@ ElapsedTime runtime=new ElapsedTime();
                 AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
 
         sleep(500);
-        while (opModeIsActive() && sideP > 0) {
-            sideP -= 0.005;
-            servoGlipSides.setPosition(sideP);
-            telemetry.addData("sidesBack", sideP);
-            telemetry.update();
-        }
-        sleep(500);        sleep(100);
-//        while (opModeIsActive() && scoreP > 0.25) {
-//            scoreP -= 0.005;
-//            servoGlipBring.setPosition(scoreP);
-//            telemetry.addData("bringBack", scoreP);
+//        while (opModeIsActive() && sideP > 0) {
+//            sideP -= 0.005;
+//            servoGlipSides.setPosition(sideP);
+//            telemetry.addData("sidesBack", sideP);
 //            telemetry.update();
 //        }
+        sleep(500);        sleep(100);
+        while (opModeIsActive() && scoreP > 0.25) {
+            scoreP -= 0.005;
+            servoGlipBring.setPosition(scoreP);
+            telemetry.addData("bringBack", scoreP);
+            telemetry.update();
+        }
 
 
     }
@@ -514,8 +515,7 @@ ElapsedTime runtime=new ElapsedTime();
         pidErr[1] = 0;
         setMotorPower(new double[][]{{power, -power}, {-power, power}});
         // search for the first col
-        runtime.reset();
-        while (opModeIsActive() && range0 - range.getDistance(DistanceUnit.CM) < 8&&runtime.seconds()<2)
+        while (opModeIsActive() && range0 - range.getDistance(DistanceUnit.CM) < 8)
         {
             //pidErr = GyroPID(modeTurn, pidErr[1]);
             setMotorPower(new double[][]{{power - pidErr[0], -power + pidErr[0]}, {-power - pidErr[0], power + pidErr[0]}});
@@ -526,8 +526,7 @@ ElapsedTime runtime=new ElapsedTime();
         sleep(400);
 
         // search for the correct col
-        runtime.reset();
-        for (int iCol = i0; iCol < colVu && opModeIsActive()&&runtime.seconds()<6; iCol++)
+        for (int iCol = i0; iCol < colVu && opModeIsActive(); iCol++)
         {
             telemetry.addData("icol", iCol);
             telemetry.update();
@@ -543,8 +542,8 @@ ElapsedTime runtime=new ElapsedTime();
                 telemetry.update();
             }
             range0 = range.getDistance(DistanceUnit.CM);
-            setMotorPower(new double[][]{{0, 0}, {0, 0}});
-            sleep(2000);
+
+            sleep(500);
             while (opModeIsActive() && range0 - range.getDistance(DistanceUnit.CM) <10 )
             {
                 //    pidErr = GyroPID(modeTurn, pidErr[1]);
@@ -554,7 +553,6 @@ ElapsedTime runtime=new ElapsedTime();
                 telemetry.addData("rangemid: ", range0-range.getDistance(DistanceUnit.CM));
                 telemetry.update();
             }
-            setMotorPower(new double[][]{{0, 0}, {0, 0}});
             sleep(900);
 
         }
@@ -682,5 +680,4 @@ ElapsedTime runtime=new ElapsedTime();
     }
 //
 //    }
-
 }
