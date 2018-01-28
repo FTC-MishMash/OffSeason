@@ -18,14 +18,14 @@ import static java.lang.Thread.sleep;
 
 
 
-@TeleOp(name = "DriveUpdated", group = "Iterative Opmode")
+@TeleOp(name = "Drivey", group = "Iterative Opmode")
 //@Disabled
 public class Drive extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     DcMotor[][] drivetrainDC = new DcMotor[3][3];
     DcMotor[] intakeDC = new DcMotor[2];
-    DcMotor[] relicDC = new DcMotor[1];
+    DcMotor relicDC ;
     double[][] sticks = new double[4][4];
     Servo[] servosGlip = new Servo[3];
     Servo servoSensor;
@@ -49,7 +49,7 @@ public class Drive extends OpMode {
 
         intakeDC[0] = hardwareMap.get(DcMotor.class, "g1");
         intakeDC[1] = hardwareMap.get(DcMotor.class, "g2");
-        relicDC[0] = hardwareMap.get(DcMotor.class, "dcRelic");
+        relicDC = hardwareMap.get(DcMotor.class, "dcRelic");
         servoSensor = hardwareMap.get(Servo.class, "servoSensor");
         servoArm = hardwareMap.get(Servo.class, "servoArm");
         servosGlip[0] = hardwareMap.get(Servo.class, "servoBring");
@@ -75,6 +75,10 @@ public class Drive extends OpMode {
 
         drivetrainDC[1][1].setDirection(DcMotorSimple.Direction.REVERSE);
         drivetrainDC[1][1].setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        relicDC.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        relicDC.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        relicDC.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         intakeDC[1].setDirection(DcMotorSimple.Direction.REVERSE);
         telemetry.addData("Status", "Initialized");
     }
@@ -86,8 +90,8 @@ public class Drive extends OpMode {
      */
     @Override
     public void init_loop() {
-        servoArm.setPosition(0.5);
-        servoSensor.setPosition(0.9);
+//        servoArm.setPosition(0.5);
+//        servoSensor.setPosition(0.9);
         glyphsServoOperation(2, 0.3);
         glyphsServoOperation(1,1);
         //glyphsServoOperation(0, 0.2);
@@ -114,6 +118,7 @@ public class Drive extends OpMode {
     int pos[][] = new int[2][2];
     double glyphPower = 0;
     double posGlyph = 0;
+    double posGlyph1 = 0;
 
     @Override
     public void loop() {
@@ -131,7 +136,7 @@ public class Drive extends OpMode {
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++) {
                 pos[i][j] =  drivetrainDC[i][j].getCurrentPosition();
-                telemetry.addData("pos", pos[i][j]);
+               // telemetry.addData("pos", pos[i][j]);
             }
         telemetry.update();
         double serGain = 0;
@@ -159,8 +164,6 @@ public class Drive extends OpMode {
 
 
 
-        tankDriveTrainSetPower(gain);
-
         //  intakeOperation(intakeGain);
 
         if (gamepad1.right_trigger != 0)//strafe to the right
@@ -171,47 +174,60 @@ public class Drive extends OpMode {
         else
             tankDriveTrainSetPower(gain);
 
-        if (gamepad2.a)// intake
-            intakeOperation(-1);
-        else if (gamepad2.b)// backwards intake
-            intakeOperation(1);
+        if (gamepad2.right_bumper)// intake
+            intakeOperation(-0.8);
+        else if (gamepad2.right_trigger != 0)// backwards intake
+            intakeOperation(0.8);
         else
             intakeOperation(0);
 
-        if(gamepad2.left_trigger != 0)//glyphs scoring
+        if(gamepad2.y)//glyphs scoring
         {
-            if (servosGlip[0].getPosition() > 0)
-            {
-                posGlyph -= 0.01;
-                servosGlip[0].setPosition(posGlyph);
-            }
-        }
-
-        if(gamepad2.right_trigger != 0)
-        {
-            if (servosGlip[0].getPosition() < 0.8)
+            if (servosGlip[0].getPosition() < 0.45)
             {
                 posGlyph += 0.01;
                 servosGlip[0].setPosition(posGlyph);
-              //  telemetry.addData("servoBring",servosGlip[0].getPosition());
-              //  telemetry.update();
             }
         }
 
-        if (gamepad2.y){
-            double posGlip;
-            for (posGlip=servosGlip[0].getPosition();posGlip>0;posGlip-=0.01){
-            servosGlip[0].setPosition(posGlip);
+//        if(gamepad2.right_trigger != 0)
+//        {
+//            if (servosGlip[0].getPosition() < 0.8)
+//            {
+//                posGlyph += 0.01;
+//                servosGlip[0].setPosition(posGlyph);
+//              //  telemetry.addData("servoBring",servosGlip[0].getPosition());
+//              //  telemetry.update();
+//            }
+//        }
+
+        if (gamepad2.x){
+            if (servosGlip[0].getPosition() > 0)
+            {
+                posGlyph1 -= 0.01;
+                servosGlip[0].setPosition(posGlyph1);
             }
         }
-        if (gamepad2.x){
-            servosGlip[0].setPosition(0.5);
-        }
+
+
+
+//        if (gamepad2.x){
+//            double posGlip;
+//            for (posGlip=servosGlip[0].getPosition();posGlip>0;posGlip-=0.01){
+//            servosGlip[0].setPosition(posGlip);
+//            }
+//        }
+//        if (gamepad2.y){
+//            servosGlip[0].setPosition(0.45);
+//        }
+
+            servosGlip[2].setPosition(1);
+
 
         if(gamepad2.left_bumper)//operates the side of the glyphs servo
-            servosGlip[1].setPosition(1);
-        else if(gamepad2.right_bumper)
             servosGlip[1].setPosition(0);
+        else if(gamepad2.left_trigger != 0)
+            servosGlip[1].setPosition(1);
 
 //        if(gamepad2.dpad_up)//operates the "finger" at the back of the glyphs
 //        {
@@ -226,13 +242,22 @@ public class Drive extends OpMode {
 //        telemetry.addData("servoHand",servosGlip[2]);
 //        telemetry.update();
 
-
-        if(gamepad2.right_stick_x != 0)//opens the relic arm
-            relicDC[0].setPower(0.45);
-        else if(gamepad2.left_stick_x != 0)//closes the relic arm
-            relicDC[0].setPower(-0.45);
-        else
-            relicDC[0].setPower(0);
+        int relicPos = relicDC.getCurrentPosition();
+         telemetry.addData("pos", relicPos);
+        if(gamepad2.b)//opens the relic arm
+        {
+            relicDC.setTargetPosition(relicPos+20);
+            relicDC.setPower(1);
+        }
+        if(gamepad2.a)
+        {
+            relicDC.setTargetPosition(relicPos-20);
+            relicDC.setPower(1);
+        }
+       // sPosRelic0 =
+          //      sPosRelic0 =
+                       // servosRelic[0].setPosition();
+       // while (relicDC.isBusy());
     }
 
     void tankDriveTrainSetPower(double gain)

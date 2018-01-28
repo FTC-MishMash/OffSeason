@@ -54,7 +54,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @Autonomous(name = "Concept: Scan Servo", group = "Concept")
-//@Disableds
+
+@Disabled
 public class ConceptScanServo extends LinearOpMode {
 
     static final double INCREMENT = 0.01;     // amount to slew servo each CYCLE_MS cycle

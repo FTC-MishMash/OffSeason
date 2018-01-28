@@ -35,7 +35,7 @@ public class Blue2 extends driveToCol {
     int S;// STRAFE PER MODE
     int D;// DRIVE DISTANCE PER MODE
     int modeOri;// ORIENTATION PER MODE
-    int mode = 3;
+    int mode = 4;
     RelicRecoveryVuMark v;
     DcMotor[] intakeDC = new DcMotor[2];
 }

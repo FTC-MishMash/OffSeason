@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 @Autonomous(name = "autoBlue1")
 
-public class Blue1 extends driveToCol {
+public class Blue1 extends driveToColBlue {
     OpenGLMatrix lastLocation = null;
     double distanceToGo = 0;
     VuforiaLocalizer vuforia;
