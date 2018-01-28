@@ -45,7 +45,7 @@ public class driveToCol extends LinearOpMode {
 
     Orientation angles, angles2;
     ModernRoboticsI2cRangeSensor range;
-
+    //dd
     DcMotor[][] dcmotor = new DcMotor[5][4];
     double motorPower = 0;
     int modeTurn; // TURN PER MODE
