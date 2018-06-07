@@ -978,7 +978,7 @@ NewGlobal extends LinearOpMode {
         sleep(500);
         stopIntake();
     }
-
+       //check
 
     public void Centering(int color, double power) {
 
