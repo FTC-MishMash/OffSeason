@@ -21,10 +21,10 @@ public class Turn extends NewGlobal {
         if (goalAngle == 0) {
             if (imu.getAngularOrientation(AxesReference.INTRINSIC,
                     AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle < 0) {
-                //  sideOfTurn= false??;    //left
+                //  sideOfTurn= true??;    //right
             } else if (imu.getAngularOrientation(AxesReference.INTRINSIC,
                     AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle > 0) {
-                //  sideOfTurn= true??;    //right
+                //  sideOfTurn= false??;    //left
             }
         }
         if (imu.getAngularOrientation(AxesReference.INTRINSIC,
@@ -46,7 +46,7 @@ public class Turn extends NewGlobal {
                         AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle < goalAngle)
 
         {
-            //  sideOfTurn= false??;    //left
+            //  sideOfTurn= true??;    //right
 
         } else if (imu.getAngularOrientation(AxesReference.INTRINSIC,
                 AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle >= 0 && goalAngle > 0 &&
@@ -62,9 +62,9 @@ public class Turn extends NewGlobal {
                     AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle - goalAngle) >
                     (180 - imu.getAngularOrientation(AxesReference.INTRINSIC,
                             AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle) + 180 + goalAngle) {
-                //  sideOfTurn= false???;    //left
+                //  sideOfTurn= true???;    //right
             } else {
-//  sideOfTurn= true???;    //right
+//  sideOfTurn= false???;    //left
             }
         } else if (imu.getAngularOrientation(AxesReference.INTRINSIC,
                 AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle <= 0 && goalAngle > 0)
@@ -74,7 +74,7 @@ public class Turn extends NewGlobal {
                     AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + goalAngle) <
                     (180 + imu.getAngularOrientation(AxesReference.INTRINSIC,
                             AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + 180 - goalAngle)) {
-                //  sideOfTurn= false???;    //left
+                //  sideOfTurn= true???;    //right
             } else {
                 //  sideOfTurn= true???;    //right
             }
