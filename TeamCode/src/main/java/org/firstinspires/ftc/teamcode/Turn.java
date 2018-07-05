@@ -79,7 +79,7 @@ public class Turn extends NewGlobal {
                 //  sideOfTurn= true???;    //right
             }
 
-        }//0
+        }
         if (sideOfTurn) {
             while (goalAngle < imu.getAngularOrientation(AxesReference.INTRINSIC,
                     AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle) {
