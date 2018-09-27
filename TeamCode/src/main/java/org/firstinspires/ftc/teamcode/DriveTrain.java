@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.util.Range;
 import static java.lang.Thread.sleep;
 
 
-@TeleOp(name = "Drive", group = "Iterative Opmode")
+@TeleOp(name = "Turning", group = "Iterative Opmode")
 //@Disabled
 public class DriveTrain extends OpMode {
 //hello
