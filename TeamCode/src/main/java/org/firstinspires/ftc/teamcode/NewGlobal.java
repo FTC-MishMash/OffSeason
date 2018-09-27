@@ -110,36 +110,36 @@ NewGlobal extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         // pixyCam = hardwareMap.get(I2cDeviceSynch.class, "pixy");
-        range = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "rangeRight");
+       // range = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "rangeRight");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         // imu2 = hardwareMap.get(BNO055IMU.class, "imu2");
-        dcmotor[0][1] = hardwareMap.get(DcMotor.class, "right1");
-        dcmotor[1][1] = hardwareMap.get(DcMotor.class, "right2");
-        dcmotor[0][0] = hardwareMap.get(DcMotor.class, "left1");
-        dcmotor[1][0] = hardwareMap.get(DcMotor.class, "left2");
-        intakeDC[0] = hardwareMap.get(DcMotor.class, "g1");
-        intakeDC[1] = hardwareMap.get(DcMotor.class, "g2");
-        colorMiddle = hardwareMap.get(ColorSensor.class, "colorMiddle");
-        sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
-        sensorColorBack = hardwareMap.get(ColorSensor.class, "sensorColorRight");
-        sensorColorLeft = hardwareMap.get(ColorSensor.class, "sensorColorLeft");
-        relicServo[0] = hardwareMap.get(Servo.class, "relicServo1");
-//        dcmotor[0][1].setDirection(DcMotorSimple.Direction.REVERSE);
-//        dcmotor[1][1].setDirection(DcMotorSimple.Direction.REVERSE);
-        servoGlyphSides = hardwareMap.get(Servo.class, "servoSides");
-        touchUp = hardwareMap.get(DigitalChannel.class, "TouchUp");
-        touchDown = hardwareMap.get(DigitalChannel.class, "TouchDown");
-        rangeLeft = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "rangeLeft");
-        dcRelic3 = hardwareMap.get(DcMotor.class, "relic3");
-        magnetDown = hardwareMap.get(DigitalChannel.class, "magnetDown");
-        //servoGlipHand = hardwareMap.get(Servo.class, "servoHand");
-        servoGlyphBring[0] = hardwareMap.get(Servo.class, "servoBring");
-        servoGlyphBring[1] = hardwareMap.get(Servo.class, "servoBring2");
-        //Door = hardwareMap.get(DcMotor.class, "Door");
-        servoArm = hardwareMap.get(Servo.class, "servoArm");
-        servoSensor = hardwareMap.get(Servo.class, "servoSensor");
-        sensorColorDistanse = (DistanceSensor) hardwareMap.get(DistanceSensor.class, "upperColorDistanse");
-        pot = hardwareMap.get(AnalogInput.class, "pot");
+        dcmotor[0][1] = hardwareMap.get(DcMotor.class, "rightFront");
+        dcmotor[1][1] = hardwareMap.get(DcMotor.class, "rightBack");
+        dcmotor[0][0] = hardwareMap.get(DcMotor.class, "leftFront");
+        dcmotor[1][0] = hardwareMap.get(DcMotor.class, "leftBack");
+//        intakeDC[0] = hardwareMap.get(DcMotor.class, "g1");
+//        intakeDC[1] = hardwareMap.get(DcMotor.class, "g2");
+//        colorMiddle = hardwareMap.get(ColorSensor.class, "colorMiddle");
+//        sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
+//        sensorColorBack = hardwareMap.get(ColorSensor.class, "sensorColorRight");
+//        sensorColorLeft = hardwareMap.get(ColorSensor.class, "sensorColorLeft");
+//        relicServo[0] = hardwareMap.get(Servo.class, "relicServo1");
+////        dcmotor[0][1].setDirection(DcMotorSimple.Direction.REVERSE);
+////        dcmotor[1][1].setDirection(DcMotorSimple.Direction.REVERSE);
+//        servoGlyphSides = hardwareMap.get(Servo.class, "servoSides");
+//        touchUp = hardwareMap.get(DigitalChannel.class, "TouchUp");
+//        touchDown = hardwareMap.get(DigitalChannel.class, "TouchDown");
+//        rangeLeft = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "rangeLeft");
+//        dcRelic3 = hardwareMap.get(DcMotor.class, "relic3");
+//        magnetDown = hardwareMap.get(DigitalChannel.class, "magnetDown");
+//        //servoGlipHand = hardwareMap.get(Servo.class, "servoHand");
+//        servoGlyphBring[0] = hardwareMap.get(Servo.class, "servoBring");
+//        servoGlyphBring[1] = hardwareMap.get(Servo.class, "servoBring2");
+//        //Door = hardwareMap.get(DcMotor.class, "Door");
+//        servoArm = hardwareMap.get(Servo.class, "servoArm");
+//        servoSensor = hardwareMap.get(Servo.class, "servoSensor");
+//        sensorColorDistanse = (DistanceSensor) hardwareMap.get(DistanceSensor.class, "upperColorDistanse");
+//        pot = hardwareMap.get(AnalogInput.class, "pot");
         dcmotor[0][0].setDirection(DcMotorSimple.Direction.REVERSE);
         dcmotor[0][1].setDirection(DcMotorSimple.Direction.FORWARD);
         dcmotor[1][0].setDirection(DcMotorSimple.Direction.REVERSE);
@@ -158,38 +158,37 @@ NewGlobal extends LinearOpMode {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         resetZAxis();
-        telemetry.addData("IN SERVO init", servoSensor.getPosition());
-        telemetry.update();
-        switch (mode) {
-            case 1: {//red 1
-                modeTurn = 90;
-                bColor = 0;
-                break;
-            }
-            case 2: {//red 2
-                modeTurn = 180;
-                bColor = 0;
-                break;
-            }
-            case 3: {//blue 1
-                modeTurn = 90;
-                bColor = 1;
-                break;
-            }
-            case 4: {//blue 2
-                modeTurn = 0;
-                bColor = 1;
 
-                // set the mode the robot use in the autumonus
-            }
+//        switch (mode) {
+//            case 1: {//red 1
+//                modeTurn = 90;
+//                bColor = 0;
+//                break;
+//            }
+//            case 2: {//red 2
+//                modeTurn = 180;
+//                bColor = 0;
+//                break;
+//            }
+//            case 3: {//blue 1
+//                modeTurn = 90;
+//                bColor = 1;
+//                break;
+//            }
+//            case 4: {//blue 2
+//                modeTurn = 0;
+//                bColor = 1;
+//
+//                // set the mode the robot use in the autumonus
+//            }
         }
 
 
-        runtime.reset();
-        relicServo[0].setPosition(0);
+
+      //  relicServo[0].setPosition(0);
 //        servoGlyphSides.setPosition(0);
-        colVu = GetColoumn();
-    }
+   //     colVu = GetColoumn();
+
 
 
     public void crossing(double power, double powerDC) {
