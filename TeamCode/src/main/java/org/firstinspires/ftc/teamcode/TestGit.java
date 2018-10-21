@@ -5,5 +5,7 @@ package org.firstinspires.ftc.teamcode;
  */
 
 public class TestGit {
-    public void A(){}
+    public void A(){
+        int s=4;
+    }
 }
