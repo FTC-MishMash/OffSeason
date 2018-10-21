@@ -7,5 +7,6 @@ package org.firstinspires.ftc.teamcode;
 public class TestGit {
     public void A(){
         int s=0;
+        s++;
     }
 }
